@@ -1,0 +1,4 @@
+packages/
+.vs/
+CEFRequestHandler/obj
+CEFRequestHandler/bin
