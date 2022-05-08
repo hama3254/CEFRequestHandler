@@ -1,4 +1,5 @@
 packages/
 .vs/
-CEFRequestHandler/obj
-CEFRequestHandler/bin
+RequestHandler/obj
+RequestHandler/bin
+*.bak

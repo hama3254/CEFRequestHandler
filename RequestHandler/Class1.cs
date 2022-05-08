@@ -39,7 +39,7 @@ namespace AdapterRequestHandler
 
     }
 
-    public class CEFRequestHandler : RequestHandler
+    public class RequestEventHandler : RequestHandler
     {
 
 
@@ -65,15 +65,15 @@ namespace AdapterRequestHandler
 
             RequestResource.OnRequestEvent(request.Url);
 
-            
 
-             //Only intercept specific Url
+
+            //Only intercept specific Url
 
             // Uri url = new Uri(request.Url);
 
             //if (_BlockList.Contains(url.Host))//Regex.Match(request.Url, pattern).Success
             //{
-            //    return new CEFResourceHandler();
+            //    return new ResourceEventHandler();
 
             //}
             ///Default behaviour, url will be loaded normally.
@@ -83,7 +83,7 @@ namespace AdapterRequestHandler
     }
 }
 
-class CEFResourceHandler : ResourceRequestHandler
+class ResourceEventHandler : ResourceRequestHandler
 {
     /*protected override bool OnResourceResponse(IWebBrowser browserControl, IBrowser browser, IFrame frame, IRequest request, IResponse response)
     {
