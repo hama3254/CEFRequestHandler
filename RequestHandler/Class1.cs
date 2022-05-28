@@ -12,28 +12,50 @@ using System.Threading.Tasks;
 
 namespace AdapterRequestHandler
 {
-    public class RequestResourceEventArgs : EventArgs
+
+    public class ClientRequest
     {
-
-        public string RequestUrl { get; private set; }
-
-        public RequestResourceEventArgs(string requestUrl)
+        public string Url;
+        public string Headers;
+        public ClientRequest(string Url, string Headers)
         {
-            RequestUrl = requestUrl;
+            this.Url = Url;
+            this.Headers = Headers;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}, {1}", this.Url, this.Headers);
         }
     }
 
+
+    public class RequestResourceEventArgs : EventArgs
+    {
+
+        public ClientRequest Request { get; private set; }
+
+        public RequestResourceEventArgs(ClientRequest request)
+        {
+            Request = request;
+        }
+
+
+
+    }
+
     public delegate void RequestResourceHandler( RequestResourceEventArgs e);
+
 
     public class RequestResource
     {
         public static event RequestResourceHandler GetUrl;
 
-        public static void OnRequestEvent(string url)
+        public static void OnRequestEvent(ClientRequest request)
         {
             if (RequestResource.GetUrl != null)
             {
-                RequestResource.GetUrl?.Invoke( new RequestResourceEventArgs(url));
+                RequestResource.GetUrl?.Invoke( new RequestResourceEventArgs(request));
             }
         }
 
@@ -61,9 +83,11 @@ namespace AdapterRequestHandler
         protected override IResourceRequestHandler GetResourceRequestHandler(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request, bool isNavigation, bool isDownload, string requestInitiator, ref bool disableDefaultHandling)
         {
             //HelperClasses.Logger.Log("In GetResourceRequestHandler : " + request.Url);
-        
 
-            RequestResource.OnRequestEvent(request.Url);
+
+            //RequestResource.OnRequestEvent(new ClientRequest(request.Url, request.Headers));
+
+            RequestResource.OnRequestEvent(new ClientRequest(request.Url, string.Join(",", request.Headers.AllKeys.Select(key => request.Headers[key]))));
 
 
 
